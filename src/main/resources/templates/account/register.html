@@ -1,0 +1,86 @@
+<main xmlns:th="http://www.thymeleaf.org">
+
+    <section class="login-section d-flex align-items-center py-5"
+             style="background: linear-gradient(rgba(0,33,102,0.8), rgba(0,33,102,0.8)),
+                    url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070');
+                    background-size: cover; min-height: 90vh;">
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body p-5">
+
+                            <div class="text-center mb-4">
+                                <h2 class="playfair text-ocean fw-bold">GIA NHẬP KAISER SEA</h2>
+                                <p class="text-gold small">Trở thành thành viên đẳng cấp</p>
+                            </div>
+
+                            <form th:action="@{/account/register}"
+                                  th:object="${account}"
+                                  method="post">
+
+                                <!-- USERNAME -->
+                                <div class="mb-3">
+                                    <label class="form-label">Tên đăng nhập</label>
+                                    <input th:field="*{username}"
+                                           class="form-control"
+                                           th:errorclass="is-invalid">
+                                    <div class="invalid-feedback"
+                                         th:errors="*{username}"></div>
+                                </div>
+
+                                <!-- PASSWORD -->
+                                <div class="mb-3">
+                                    <label class="form-label">Mật khẩu</label>
+                                    <input type="password"
+                                           th:field="*{password}"
+                                           class="form-control"
+                                           th:errorclass="is-invalid">
+                                    <div class="invalid-feedback"
+                                         th:errors="*{password}"></div>
+                                </div>
+
+                                <!-- FULLNAME -->
+                                <div class="mb-3">
+                                    <label class="form-label">Họ và tên</label>
+                                    <input th:field="*{fullname}"
+                                           class="form-control"
+                                           th:errorclass="is-invalid">
+                                    <div class="invalid-feedback"
+                                         th:errors="*{fullname}"></div>
+                                </div>
+
+                                <!-- EMAIL -->
+                                <div class="mb-4">
+                                    <label class="form-label">Email</label>
+                                    <input type="email"
+                                           th:field="*{email}"
+                                           class="form-control"
+                                           th:errorclass="is-invalid">
+                                    <div class="invalid-feedback"
+                                         th:errors="*{email}"></div>
+                                </div>
+
+                                <button class="btn btn-gold w-100 fw-bold">
+                                    ĐĂNG KÝ
+                                </button>
+
+                                <div class="text-center mt-3">
+                                    <a th:href="@{/account/login}"
+                                       class="text-gold text-decoration-none">
+                                        Đã có tài khoản? Đăng nhập
+                                    </a>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

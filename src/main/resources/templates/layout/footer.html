@@ -1,0 +1,82 @@
+<footer th:fragment="foot" class="text-white pt-5 pb-3" style="background-color: #002147; border-top: 3px solid #D4AF37;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <h4 class="playfair text-gold mb-4">KAISER SEA</h4>
+                <p class="small lh-lg" style="color: #a5b1c2;">
+                    Nơi kết tinh những giá trị tinh hoa của đại dương vào trong từng món trang sức.
+                    Chúng tôi mang đến sự sang trọng, đẳng cấp và vẻ đẹp vĩnh cửu cho khách hàng.
+                </p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="#" class="text-gold fs-5"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-gold fs-5"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-gold fs-5"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="text-gold fs-5"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h6 class="text-uppercase fw-bold mb-4 text-gold">KHÁM PHÁ</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/" class="text-decoration-none text-white-50 small hover-gold">Trang chủ</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-white-50 small hover-gold">Bộ sưu tập mới</a></li>
+                    <li class="mb-2"><a href="/cart/view" class="text-decoration-none text-white-50 small hover-gold">Giỏ hàng</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-white-50 small hover-gold">Chính sách bảo hành</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-uppercase fw-bold mb-4 text-gold">DỊCH VỤ</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-white-50 small hover-gold">Hướng dẫn đo size</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-white-50 small hover-gold">Vận chuyển & Giao nhận</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-white-50 small hover-gold">Câu hỏi thường gặp</a></li>
+                    <li class="mb-2"><a href="/account/login" class="text-decoration-none text-white-50 small hover-gold">Tài khoản cá nhân</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-uppercase fw-bold mb-4 text-gold">LIÊN HỆ</h6>
+                <p class="small text-white-50 mb-2">
+                    <i class="bi bi-geo-alt-fill text-gold me-2"></i> 123 Đường Đại Dương, TP. Hồ Chí Minh
+                </p>
+                <p class="small text-white-50 mb-2">
+                    <i class="bi bi-telephone-fill text-gold me-2"></i> (+84) 123 456 789
+                </p>
+                <p class="small text-white-50 mb-2">
+                    <i class="bi bi-envelope-fill text-gold me-2"></i> contact@kaisersea.com
+                </p>
+                <div class="mt-4 p-3 border border-secondary rounded">
+                    <p class="small fw-bold mb-1 text-gold">Đăng ký nhận tin</p>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control bg-transparent text-white border-secondary" placeholder="Email của bạn...">
+                        <button class="btn btn-gold text-dark fw-bold" type="button">GỬI</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-5 bg-secondary">
+
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="small text-white-50 mb-0">
+                    &copy; 2026 <span class="text-gold fw-bold">KAISER SEA</span>. All rights reserved. Design by <span class="text-gold">Em Yêu</span>.
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                <img src="https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg" height="30" class="me-3 grayscale" alt="Payment">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" height="20" class="me-3 grayscale" alt="Visa">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" height="20" class="grayscale" alt="MasterCard">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .hover-gold:hover { color: #D4AF37 !important; transition: 0.3s; }
+        .grayscale { filter: grayscale(100%) brightness(1.5); transition: 0.3s; }
+        .grayscale:hover { filter: grayscale(0%); }
+        .btn-gold { background-color: #D4AF37; border-color: #D4AF37; }
+        .btn-gold:hover { background-color: #b8952e; }
+    </style>
+</footer>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <nav class="container mt-4" style="--bs-breadcrumb-divider: '›';">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted small">TRANG CHỦ</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/(cid=${item.categoryId})}"
+                                           class="text-decoration-none text-muted small"
+                                           th:text="${#strings.toUpperCase(item.categoryName)}">DANH MỤC</a></li>
+            <li class="breadcrumb-item active small text-ocean fw-bold" aria-current="page" th:text="${item.name}">TÊN SẢN PHẨM</li>
+        </ol>
+    </nav>
+
+    <section class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <div class="product-gallery bg-white p-3 shadow-sm border border-light animate__animated animate__fadeInLeft">
+                    <div class="main-image-wrapper overflow-hidden border">
+                        <img th:src="${item.image}" class="img-fluid w-100 zoom-img" th:alt="${item.name}">
+                    </div>
+                    <div class="row mt-3 g-2">
+                        <div class="col-3" th:each="i : ${#numbers.sequence(1,4)}">
+                            <img th:src="${item.image}" class="img-fluid border opacity-75 hover-opacity-100 cursor-pointer" style="height: 80px; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 animate__animated animate__fadeInRight">
+                <div class="ps-lg-4">
+                    <span class="text-gold fw-bold small text-uppercase ls-2" th:text="${item.categoryName}">Bộ sưu tập</span>
+                    <h1 class="playfair display-5 text-ocean my-3" th:text="${item.name}">Tên tuyệt tác</h1>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="text-warning me-2">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <span class="text-muted small border-start ps-2">(128 đánh giá từ khách hàng thượng lưu)</span>
+                    </div>
+
+                    <h2 class="text-gold playfair fw-bold mb-4 fs-1"
+                        th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                        0 VNĐ
+                    </h2>
+
+                    <p class="text-muted lh-lg mb-4 fw-light">
+                        Mỗi tuyệt tác của <strong class="text-ocean">Kaiser Sea</strong> không chỉ là trang sức, mà là một câu chuyện từ đại dương.
+                        Được chế tác thủ công với độ tinh xảo tuyệt đối, sản phẩm mang lại vẻ đẹp quý phái và quyền năng cho chủ nhân sở hữu.
+                    </p>
+
+                    <div class="order-box p-4 border bg-white mb-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">CHỌN SỐ LƯỢNG:</label>
+                                <div class="input-group" style="width: 140px;">
+                                    <button class="btn btn-outline-secondary border-gold" type="button" onclick="changeQty(-1)">-</button>
+                                    <input type="number" id="qty" class="form-control text-center border-gold" value="1" min="1">
+                                    <button class="btn btn-outline-secondary border-gold" type="button" onclick="changeQty(1)">+</button>
+                                </div>
+                            </div>
+                            <div class="col-12 d-grid mt-4">
+                                <a th:href="@{|/cart/add/${item.id}|}" class="btn btn-ocean-gold py-3 fw-bold fs-5">
+                                    <i class="bi bi-bag-gold me-2"></i>SỞ HỮU NGAY
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center p-2 border rounded-1">
+                                <i class="bi bi-truck text-gold fs-4 me-3"></i>
+                                <span class="small fw-bold">Giao hàng hỏa tốc</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center p-2 border rounded-1">
+                                <i class="bi bi-shield-check text-gold fs-4 me-3"></i>
+                                <span class="small fw-bold">Bảo hành trọn đời</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5 border-top">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="playfair text-ocean mb-4">Tinh Hoa Chế Tác</h3>
+                <p class="text-muted italic">
+                    "Chúng tôi tin rằng vẻ đẹp thực sự bắt nguồn từ sự tỉ mỉ. Kaiser Sea sử dụng những nguyên liệu quý hiếm nhất từ lòng biển khơi, kết hợp với đôi bàn tay khéo léo của những nghệ nhân kim hoàn hàng đầu để tạo nên món trang sức này."
+                </p>
+                <div class="mt-4">
+                    <img th:src="${item.image}" class="rounded-circle shadow-lg" width="150" height="150" style="object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<style>
+    .text-ocean { color: #002147; }
+    .border-gold { border-color: #D4AF37 !important; }
+    .ls-2 { letter-spacing: 2px; }
+
+    .zoom-img { transition: transform 0.8s ease; cursor: zoom-in; }
+    .zoom-img:hover { transform: scale(1.2); }
+
+    .cursor-pointer { cursor: pointer; }
+    .hover-opacity-100:hover { opacity: 1 !important; transition: 0.3s; }
+
+    .btn-ocean-gold {
+        background: linear-gradient(45deg, #002147, #003366);
+        color: #D4AF37;
+        border: 1px solid #D4AF37;
+        border-radius: 0;
+        transition: 0.4s;
+        letter-spacing: 1px;
+    }
+    .btn-ocean-gold:hover {
+        background: #D4AF37;
+        color: #002147;
+        box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Animation cho trang thêm sống động */
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+</style>
+
+<script>
+    function changeQty(amount) {
+        let input = document.getElementById('qty');
+        let current = parseInt(input.value);
+        if(current + amount >= 1) {
+            input.value = current + amount;
+        }
+    }
+</script>
+</body>
+</html>

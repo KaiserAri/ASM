@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/index :: dynamic(~{::main})}">
+<body>
+<main th:fragment="main">
+    <section class="py-4 bg-ocean text-white border-bottom border-gold mb-5">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="playfair text-gold mb-0">QUẢN LÝ DANH MỤC</h2>
+                <p class="small text-white-50 mb-0">Hệ thống quản trị bộ sưu tập Kaiser Sea</p>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/" class="text-white-50 small">Trang chủ</a></li>
+                    <li class="breadcrumb-item active text-gold small" aria-current="page">Admin / Category</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 100px; border-radius: 0;">
+                    <h5 class="playfair text-ocean border-bottom pb-3 mb-4">THÔNG TIN DANH MỤC</h5>
+
+                    <form th:action="@{/admin/category/index}" th:object="${item}" method="post">
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted">MÃ DANH MỤC (TỰ ĐỘNG)</label>
+                            <input th:field="*{id}" class="form-control bg-light border-0" readonly placeholder="Auto ID">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted">TÊN BỘ SƯU TẬP *</label>
+                            <input th:field="*{name}" class="form-control border-gold-focus py-2"
+                                   placeholder="Ví dụ: Nhẫn Kim Cương" required>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-5">
+                            <button th:formaction="@{/admin/category/create}" class="btn btn-ocean-gold fw-bold">
+                                <i class="bi bi-plus-lg me-2"></i>THÊM MỚI
+                            </button>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button th:formaction="@{/admin/category/update}" class="btn btn-outline-ocean w-100 fw-bold">CẬP NHẬT</button>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/admin/category/index" class="btn btn-outline-secondary w-100 fw-bold">LÀM MỚI</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 0;">
+                    <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-ocean small"><i class="bi bi-list-ul me-2"></i>TẤT CẢ DANH MỤC</span>
+                        <span class="badge bg-ocean text-gold" th:text="${items.size()} + ' Danh mục'">0</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-white text-muted small text-uppercase fw-bold">
+                            <tr>
+                                <th class="ps-4 py-3" style="width: 100px;">ID</th>
+                                <th class="py-3">Tên Bộ Sưu Tập</th>
+                                <th class="py-3 text-center">Số Sản Phẩm</th>
+                                <th class="pe-4 py-3 text-end">Thao Tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="c : ${items}" class="animate__animated animate__fadeIn">
+                                <td class="ps-4 fw-bold text-ocean" th:text="${c.id}">1</td>
+                                <td>
+                                    <span class="fw-semibold" th:text="${c.name}">Tên danh mục</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill bg-light text-muted border px-3">Premium</span>
+                                </td>
+                                <td class="pe-4 text-end">
+                                    <a th:href="@{|/admin/category/edit/${c.id}|}" class="btn btn-sm btn-outline-primary border-0 me-2">
+                                        <i class="bi bi-pencil-square"></i> SỬA
+                                    </a>
+                                    <a th:href="@{|/admin/category/delete/${c.id}|}"
+                                       class="btn btn-sm btn-outline-danger border-0"
+                                       onclick="return confirm('Bạn có chắc muốn xóa bộ sưu tập này không?')">
+                                        <i class="bi bi-trash"></i> XÓA
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-white border-start border-gold shadow-sm small">
+                    <i class="bi bi-info-circle text-gold me-2"></i>
+                    <strong>Lưu ý:</strong> Việc xóa một danh mục có thể ảnh hưởng đến các sản phẩm đang thuộc danh mục đó. Vui lòng kiểm tra kỹ trước khi thực hiện.
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .bg-ocean { background-color: #002147 !important; }
+    .text-ocean { color: #002147; }
+    .text-gold { color: #D4AF37 !important; }
+    .border-gold { border-color: #D4AF37 !important; }
+
+    .border-gold-focus:focus {
+        border-color: #D4AF37 !important;
+        box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.1) !important;
+    }
+
+    .btn-ocean-gold {
+        background-color: #002147;
+        color: #D4AF37;
+        border: 1px solid #D4AF37;
+        border-radius: 0;
+        transition: 0.3s;
+    }
+    .btn-ocean-gold:hover {
+        background-color: #D4AF37;
+        color: #002147;
+    }
+
+    .btn-outline-ocean {
+        border: 1px solid #002147;
+        color: #002147;
+        border-radius: 0;
+        transition: 0.3s;
+    }
+    .btn-outline-ocean:hover {
+        background-color: #002147;
+        color: #fff;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 33, 71, 0.02);
+    }
+</style>
+</body>
+</html>

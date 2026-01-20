@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/index :: dynamic(~{::main})}">
+<body>
+<main th:fragment="main">
+    <section class="py-4 bg-ocean text-white border-bottom border-gold mb-5">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="playfair text-gold mb-0">QUẢN LÝ ĐƠN HÀNG</h2>
+                <p class="small text-white-50 mb-0">Hệ thống xử lý vận đơn Kaiser Sea</p>
+            </div>
+            <div class="d-flex gap-2">
+                <div class="badge bg-gold text-dark p-2 px-3 shadow-sm">
+                    <i class="bi bi-cart-check me-1"></i> Tổng đơn: <span th:text="${items.size()}">0</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <div class="card border-0 shadow-sm overflow-hidden animate__animated animate__fadeIn" style="border-radius: 0;">
+            <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-ocean small"><i class="bi bi-box-seam me-2"></i>DANH SÁCH VẬN ĐƠN</span>
+                <div class="input-group input-group-sm" style="width: 250px;">
+                    <input type="text" class="form-control" placeholder="Tìm mã đơn #KS...">
+                    <button class="btn btn-gold border-0"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-white text-muted small text-uppercase fw-bold">
+                    <tr>
+                        <th class="ps-4 py-3">Mã đơn</th>
+                        <th class="py-3">Khách hàng</th>
+                        <th class="py-3">Ngày đặt</th>
+                        <th class="py-3 text-end">Giá trị</th>
+                        <th class="py-3 text-center">Trạng thái hiện tại</th>
+                        <th class="pe-4 py-3 text-center">Cập nhật trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="o : ${items}">
+                        <td class="ps-4">
+                            <span class="fw-bold text-ocean" th:text="'#KS-' + ${o.id}">#KS-101</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-ocean-light text-ocean rounded-circle me-2 d-flex align-items-center justify-content-center"
+                                     style="width: 32px; height: 32px; font-size: 12px;">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <div class="small">
+                                    <div class="fw-bold text-dark" th:text="${o.account.fullname}">Tên khách</div>
+                                    <div class="text-muted" th:text="${o.phone}">09xx</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="small text-muted" th:text="${#dates.format(o.createDate, 'dd/MM/yyyy HH:mm')}">01/01</td>
+                        <td class="text-end fw-bold text-ocean">
+                            <span th:text="${#numbers.formatDecimal(o.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                        </td>
+                        <td class="text-center">
+                                <span th:switch="${o.status}" class="small fw-bold">
+                                    <span th:case="0" class="text-warning"><i class="bi bi-dot fs-4"></i>Chờ xác nhận</span>
+                                    <span th:case="1" class="text-info"><i class="bi bi-dot fs-4"></i>Đang giao</span>
+                                    <span th:case="2" class="text-success"><i class="bi bi-dot fs-4"></i>Hoàn tất</span>
+                                    <span th:case="3" class="text-danger"><i class="bi bi-dot fs-4"></i>Đã hủy</span>
+                                </span>
+                        </td>
+                        <td class="pe-4">
+                            <form th:action="@{/admin/order/update-status}" method="post" class="d-flex gap-2 justify-content-center">
+                                <input type="hidden" name="id" th:value="${o.id}">
+                                <select name="status" class="form-select form-select-sm border-gold-focus" style="width: 140px;">
+                                    <option value="0" th:selected="${o.status == 0}">Chờ xác nhận</option>
+                                    <option value="1" th:selected="${o.status == 1}">Đang giao hàng</option>
+                                    <option value="2" th:selected="${o.status == 2}">Đã hoàn tất</option>
+                                    <option value="3" th:selected="${o.status == 3}">Hủy đơn hàng</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-ocean-gold">
+                                    <i class="bi bi-check-lg"></i>
+                                </button>
+                                <a th:href="@{|/order/detail/${o.id}|}" class="btn btn-sm btn-outline-secondary" title="Xem chi tiết">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="p-3 bg-white border-start border-gold shadow-sm small">
+                    <h6 class="text-ocean fw-bold mb-2">QUY TRÌNH XỬ LÝ:</h6>
+                    <ol class="mb-0 text-muted">
+                        <li>Kiểm tra thông tin thanh toán của đơn hàng <strong>Chờ xác nhận</strong>.</li>
+                        <li>Chuyển sang <strong>Đang giao hàng</strong> khi bưu tá đã lấy hàng.</li>
+                        <li>Chỉ chuyển <strong>Hoàn tất</strong> khi khách đã nhận tuyệt tác.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .bg-ocean { background-color: #002147 !important; }
+    .bg-ocean-light { background-color: rgba(0, 33, 71, 0.05); }
+    .text-ocean { color: #002147; }
+    .text-gold { color: #D4AF37 !important; }
+    .border-gold { border-color: #D4AF37 !important; }
+
+    .border-gold-focus:focus {
+        border-color: #D4AF37 !important;
+        box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.1) !important;
+    }
+
+    .btn-ocean-gold {
+        background-color: #002147;
+        color: #D4AF37;
+        border: 1px solid #D4AF37;
+        border-radius: 0;
+        transition: 0.3s;
+    }
+    .btn-ocean-gold:hover {
+        background-color: #D4AF37;
+        color: #002147;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 33, 71, 0.02);
+    }
+
+    /* Hiệu ứng mượt cho các hàng */
+    .animate__animated { animation-duration: 0.6s; }
+</style>
+</body>
+</html>

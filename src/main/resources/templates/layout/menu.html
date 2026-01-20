@@ -1,0 +1,44 @@
+<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm"
+     style="background-color: #002147; border-bottom: 2px solid #D4AF37;">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/" style="color: #D4AF37; letter-spacing: 2px;">
+            <i class="bi bi-gem me-2"></i>KAISER SEA
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link active" href="/">TRANG CHỦ</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">BỘ SƯU TẬP</a>
+                    <ul class="dropdown-menu shadow border-0">
+                        <li th:each="c : ${cates}">
+                            <a class="dropdown-item" th:href="@{/(cid=${c.id})}" th:text="${c.name}">Nhẫn</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <a href="/cart/view" class="text-white position-relative me-4">
+                    <i class="bi bi-bag-gold fs-4" style="color: #D4AF37;"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          th:text="${session.cartCount ?: 0}">0</span>
+                </a>
+
+                <div th:if="${session.user == null}">
+                    <a href="/account/login" class="btn btn-outline-light btn-sm">ĐĂNG NHẬP</a>
+                </div>
+
+                <div class="dropdown" th:if="${session.user != null}">
+                    <a class="text-white text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <img th:src="${session.user.photo}" class="rounded-circle border" width="35" height="35">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li><a class="dropdown-item" href="/order/list">Đơn hàng của tôi</a></li>
+                        <li th:if="${session.user.role}"><a class="dropdown-item text-danger fw-bold" href="/admin/index">QUẢN TRỊ</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/account/logout">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

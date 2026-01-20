@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/index :: dynamic(~{::main})}">
+<body>
+<main th:fragment="main">
+
+    <section class="py-5 bg-ocean text-white border-bottom border-gold mb-5">
+        <div class="container text-center animate__animated animate__fadeInDown">
+            <h1 class="playfair text-gold display-5 mb-2">QUẢN TRỊ VIÊN KAISER SEA</h1>
+            <p class="lead text-white-50 mb-0">Chào mừng trở lại! Hãy chọn tác vụ quản lý bên dưới.</p>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-md-6 col-lg-3">
+                <a href="/admin/product/index" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm card-hover text-center py-4">
+                        <div class="card-body">
+                            <div class="icon-box bg-ocean-light text-ocean rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-gem fs-2"></i>
+                            </div>
+                            <h5 class="playfair text-dark fw-bold">SẢN PHẨM</h5>
+                            <p class="text-muted small mb-0">Quản lý kho báu & trang sức</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="/admin/category/index" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm card-hover text-center py-4">
+                        <div class="card-body">
+                            <div class="icon-box bg-gold-light text-dark rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-grid-3x3-gap fs-2"></i>
+                            </div>
+                            <h5 class="playfair text-dark fw-bold">DANH MỤC</h5>
+                            <p class="text-muted small mb-0">Phân loại bộ sưu tập</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="/admin/order/index" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm card-hover text-center py-4">
+                        <div class="card-body">
+                            <div class="icon-box bg-ocean text-gold rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-box-seam fs-2"></i>
+                            </div>
+                            <h5 class="playfair text-dark fw-bold">ĐƠN HÀNG</h5>
+                            <p class="text-muted small mb-0">Xử lý vận đơn & giao hàng</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="/admin/report/index" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm card-hover text-center py-4">
+                        <div class="card-body">
+                            <div class="icon-box bg-danger-light text-danger rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-graph-up-arrow fs-2"></i>
+                            </div>
+                            <h5 class="playfair text-dark fw-bold">BÁO CÁO</h5>
+                            <p class="text-muted small mb-0">Phân tích doanh thu & kho</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="row mt-5 animate__animated animate__fadeInUp">
+            <div class="col-12">
+                <div class="alert bg-white border-start border-gold border-4 shadow-sm p-4 rounded-0">
+                    <h5 class="text-ocean fw-bold mb-2"><i class="bi bi-info-circle me-2"></i>Lưu ý hệ thống</h5>
+                    <p class="mb-0 text-muted">Hệ thống đang hoạt động ở chế độ Admin. Vui lòng cẩn trọng khi thực hiện các thao tác <strong>Xóa dữ liệu</strong> tại các trang quản lý chi tiết.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .bg-ocean { background-color: #002147 !important; }
+        .text-ocean { color: #002147; }
+        .text-gold { color: #D4AF37 !important; }
+        .border-gold { border-color: #D4AF37 !important; }
+
+        .bg-ocean-light { background-color: rgba(0, 33, 71, 0.1); }
+        .bg-gold-light { background-color: rgba(212, 175, 55, 0.1); }
+        .bg-danger-light { background-color: rgba(220, 53, 69, 0.1); }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            transition: 0.3s;
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0 !important; /* Vuông vức theo style sang trọng */
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+            border-bottom: 3px solid #D4AF37 !important;
+        }
+    </style>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<body>
+<main>
+    <section class="py-5 bg-ocean text-center text-white border-bottom border-gold">
+        <div class="container">
+            <h1 class="playfair display-5 text-gold mb-2">GIỎ HÀNG CỦA BẠN</h1>
+            <p class="small fw-light ls-2 text-uppercase">Những tuyệt tác đang chờ đợi chủ nhân xứng tầm</p>
+        </div>
+    </section>
+
+    <div class="container py-5">
+        <div th:if="${cart.count == 0}" class="text-center py-5 animate__animated animate__fadeIn">
+            <i class="bi bi-bag-x display-1 text-muted"></i>
+            <h4 class="mt-4 playfair text-ocean">Giỏ hàng của bạn đang trống</h4>
+            <p class="text-muted">Đừng bỏ lỡ cơ hội sở hữu những bộ sưu tập trang sức tinh xảo nhất.</p>
+            <a href="/" class="btn btn-gold px-5 py-2 mt-3">TIẾP TỤC KHÁM PHÁ</a>
+        </div>
+
+        <div th:if="${cart.count > 0}" class="row g-4 animate__animated animate__fadeInUp">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 0;">
+                    <table class="table align-middle mb-0">
+                        <thead class="bg-light text-ocean small fw-bold text-uppercase">
+                        <tr>
+                            <th class="ps-4 py-3 text-center" style="width: 60px;">
+                                <input type="checkbox" id="select-all" class="form-check-input">
+                            </th>
+                            <th class="py-3">Sản phẩm</th>
+                            <th class="py-3 text-center">Giá niêm yết</th>
+                            <th class="py-3 text-center">Số lượng</th>
+                            <th class="py-3 text-end">Tổng</th>
+                            <th class="pe-4 py-3 text-center"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${cart.items}" class="border-bottom">
+                            <td class="ps-4 text-center">
+                                <input type="checkbox"
+                                       class="form-check-input item-check"
+                                       th:value="${item.id}"
+                                       th:data-amount="${item.amount}"
+                                       th:data-qty="${item.quantity}"
+                                       checked>
+                            </td>
+                            <td class="py-3">
+                                <div class="d-flex align-items-center">
+                                    <img th:src="${item.image}" class="rounded border shadow-sm"
+                                         width="70" height="70" style="object-fit: cover;">
+                                    <div class="ms-3">
+                                        <h6 class="mb-0 fw-bold text-ocean" th:text="${item.name}">Tên sản phẩm</h6>
+                                        <small class="text-muted">Kaiser Sea Collection</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center fw-bold text-gold">
+                                <span th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                            </td>
+                            <td class="text-center" style="width: 150px;">
+                                <form th:action="@{|/cart/update/${item.id}|}" method="post">
+                                    <div class="input-group input-group-sm border border-gold-light">
+                                        <button class="btn btn-light" name="qty" th:value="${item.quantity - 1}" type="submit">-</button>
+                                        <input type="text" class="form-control text-center border-0 bg-white"
+                                               th:value="${item.quantity}" readonly>
+                                        <button class="btn btn-light" name="qty" th:value="${item.quantity + 1}" type="submit">+</button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td class="text-end fw-bold text-ocean">
+                                <span th:text="${#numbers.formatDecimal(item.amount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                            </td>
+                            <td class="pe-4 text-center">
+                                <a th:href="@{|/cart/remove/${item.id}|}" class="text-danger fs-5 hover-scale">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="p-3 bg-light d-flex justify-content-between">
+                        <a href="/" class="btn btn-link text-ocean text-decoration-none small">
+                            <i class="bi bi-arrow-left me-2"></i>Tiếp tục mua sắm
+                        </a>
+                        <a href="/cart/clear" class="btn btn-link text-danger text-decoration-none small"
+                           onclick="return confirm('Xóa sạch giỏ hàng?')">
+                            <i class="bi bi-trash me-2"></i>Làm trống giỏ hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 bg-ocean text-white p-4 shadow-lg sticky-top" style="top: 100px;">
+                    <h5 class="playfair text-gold border-bottom border-secondary pb-3 mb-4">HÓA ĐƠN TẠM TÍNH</h5>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-white-50">Số lượng đã chọn:</span>
+                        <span id="selected-count">0</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-white-50">Tạm tính đã chọn:</span>
+                        <span id="selected-amount">0 đ</span>
+                    </div>
+
+                    <div class="border-top border-secondary pt-3 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 text-gold playfair">TỔNG CỘNG:</h5>
+                            <h4 class="mb-0 text-gold playfair fw-bold" id="selected-total">0 VNĐ</h4>
+                        </div>
+                        <p class="small text-white-50 mt-2 italic">* Đã bao gồm thuế giá trị gia tăng</p>
+                    </div>
+
+                    <form id="checkout-form" action="/order/checkout" method="get" onsubmit="return prepareCheckout();">
+                        <div id="selected-inputs"></div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-gold btn-lg py-3 fw-bold text-uppercase shadow transition-all">
+                                Tiến đến thanh toán <i class="bi bi-chevron-right ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top border-secondary">
+                        <div class="d-flex gap-3 justify-content-center opacity-50">
+                            <i class="bi bi-shield-check fs-4" title="Bảo mật"></i>
+                            <i class="bi bi-truck fs-4" title="Giao hàng nhanh"></i>
+                            <i class="bi bi-gem fs-4" title="Chính hãng"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .bg-ocean { background-color: #002147 !important; }
+    .text-ocean { color: #002147; }
+    .text-gold { color: #D4AF37 !important; }
+    .btn-gold { background-color: #D4AF37; color: #002147; border: none; transition: 0.3s; }
+    .btn-gold:hover { background-color: #b8952e; color: #fff; transform: translateY(-3px); }
+    .border-gold { border-color: #D4AF37 !important; }
+    .border-gold-light { border-color: rgba(212, 175, 55, 0.3) !important; }
+    .ls-2 { letter-spacing: 2px; }
+
+    .hover-scale:hover { transform: scale(1.2); transition: 0.2s; display: inline-block; }
+    .transition-all { transition: all 0.3s ease; }
+</style>
+
+<script>
+    function formatVND(value) {
+        return value.toLocaleString('vi-VN') + ' đ';
+    }
+
+    function updateSelectionSummary() {
+        const checks = document.querySelectorAll('.item-check');
+        const selected = Array.from(checks).filter(c => c.checked);
+        const totalQty = selected.reduce((sum, c) => sum + parseInt(c.dataset.qty || 0), 0);
+        const totalAmount = selected.reduce((sum, c) => sum + parseFloat(c.dataset.amount || 0), 0);
+
+        document.getElementById('selected-count').textContent = totalQty + ' sản phẩm';
+        document.getElementById('selected-amount').textContent = formatVND(totalAmount);
+        document.getElementById('selected-total').textContent = formatVND(totalAmount).replace(' đ', ' VNĐ');
+
+        const selectAll = document.getElementById('select-all');
+        selectAll.checked = selected.length === checks.length;
+        selectAll.indeterminate = selected.length > 0 && selected.length < checks.length;
+    }
+
+    function prepareCheckout() {
+        const selected = Array.from(document.querySelectorAll('.item-check')).filter(c => c.checked);
+        if (selected.length === 0) {
+            alert('Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.');
+            return false;
+        }
+
+        const container = document.getElementById('selected-inputs');
+        container.innerHTML = '';
+        selected.forEach(c => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'ids';
+            input.value = c.value;
+            container.appendChild(input);
+        });
+
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectAll = document.getElementById('select-all');
+        const checks = document.querySelectorAll('.item-check');
+
+        selectAll.addEventListener('change', () => {
+            checks.forEach(c => c.checked = selectAll.checked);
+            updateSelectionSummary();
+        });
+
+        checks.forEach(c => c.addEventListener('change', updateSelectionSummary));
+
+        updateSelectionSummary();
+    });
+</script>
+</body>
+</html>

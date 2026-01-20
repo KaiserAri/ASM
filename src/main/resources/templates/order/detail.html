@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<body>
+<main>
+    <section class="py-5 bg-ocean text-center text-white border-bottom border-gold">
+        <div class="container">
+            <h1 class="playfair display-5 text-gold mb-2">CHI TIẾT ĐƠN HÀNG</h1>
+            <p class="small fw-light ls-2 text-uppercase" th:text="'MÃ ĐƠN HÀNG: #KS-' + ${orderId}">MÃ ĐƠN HÀNG: #KS-000</p>
+        </div>
+    </section>
+
+    <div class="container py-5">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="/order/list" class="text-decoration-none text-muted">Lịch sử đơn hàng</a></li>
+                <li class="breadcrumb-item active text-gold" aria-current="page">Chi tiết</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="bg-light text-ocean">
+                            <tr class="text-uppercase small fw-bold">
+                                <th class="ps-4 py-3">Sản phẩm</th>
+                                <th class="py-3 text-center">Đơn giá</th>
+                                <th class="py-3 text-center">Số lượng</th>
+                                <th class="pe-4 py-3 text-end">Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="d : ${details}" class="border-bottom-light">
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <img th:src="${d.productImage}"
+                                             class="rounded border border-gold-light"
+                                             width="70" height="70" style="object-fit: cover;">
+                                        <div class="ms-3">
+                                            <h6 class="mb-0 fw-bold text-ocean" th:text="${d.productName}">Tên trang sức</h6>
+                                            <small class="text-muted" th:text="'ID: #' + ${d.productId}">ID: #000</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span th:text="${#numbers.formatDecimal(d.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-ocean border" th:text="${d.quantity}">1</span>
+                                </td>
+                                <td class="pe-4 text-end fw-bold text-ocean">
+                                    <span th:text="${#numbers.formatDecimal(d.price * d.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 bg-ocean text-white p-4 shadow-sm sticky-top" style="top: 100px;">
+                    <h5 class="playfair text-gold border-bottom border-secondary pb-3 mb-4">HÓA ĐƠN CHI TIẾT</h5>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-white-50">Số mặt hàng:</span>
+                        <span th:text="${details.size()} + ' món'">0 món</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-white-50">Tạm tính:</span>
+                        <span th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-white-50">Phí vận chuyển:</span>
+                        <span class="text-success small fw-bold">FREE SHIPPING</span>
+                    </div>
+
+                    <hr class="bg-secondary">
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <h5 class="mb-0 text-gold playfair">TỔNG CỘNG:</h5>
+                        <h3 class="mb-0 text-gold playfair fw-bold"
+                            th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</h3>
+                    </div>
+
+                    <div class="mt-5 d-grid gap-2">
+                        <a href="/order/list" class="btn btn-outline-gold btn-sm py-2">
+                            <i class="bi bi-arrow-left me-2"></i>QUAY LẠI LỊCH SỬ
+                        </a>
+                        <button onclick="window.print()" class="btn btn-gold text-dark fw-bold btn-sm py-2">
+                            <i class="bi bi-printer me-2"></i>IN HÓA ĐƠN
+                        </button>
+                    </div>
+
+                    <p class="small text-center text-white-50 mt-4 italic">
+                        Cảm ơn bạn đã tin chọn tuyệt tác từ <br><span class="text-gold fw-bold">KAISER SEA</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .bg-ocean { background-color: #002147 !important; }
+    .text-ocean { color: #002147; }
+    .text-gold { color: #D4AF37 !important; }
+    .border-gold { border-color: #D4AF37 !important; }
+    .border-gold-light { border-color: rgba(212, 175, 55, 0.3) !important; }
+    .ls-2 { letter-spacing: 2px; }
+
+    .border-bottom-light { border-bottom: 1px solid #f1f1f1; }
+
+    .btn-gold {
+        background-color: #D4AF37;
+        border-color: #D4AF37;
+        border-radius: 0;
+        transition: 0.3s;
+    }
+    .btn-gold:hover {
+        background-color: #b8952e;
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-gold {
+        border-color: #D4AF37;
+        color: #D4AF37;
+        border-radius: 0;
+        transition: 0.3s;
+    }
+    .btn-outline-gold:hover {
+        background-color: #D4AF37;
+        color: #002147;
+    }
+
+    @media print {
+        .bg-ocean { background-color: #fff !important; color: #000 !important; }
+        .text-white, .text-gold { color: #000 !important; }
+        .btn, header, footer { display: none; }
+        .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+</style>
+</body>
+</html>

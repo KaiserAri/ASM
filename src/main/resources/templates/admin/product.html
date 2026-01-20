@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body>
+<main th:fragment="main">
+    <section class="py-4 bg-ocean text-white border-bottom border-gold mb-5">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="playfair text-gold mb-0">HỆ THỐNG TUYỆT TÁC</h2>
+                <p class="small text-white-50 mb-0">Điều hành kho báu trang sức Kaiser Sea</p>
+            </div>
+            <div class="badge bg-gold text-dark">
+                TỔNG KHO:
+                <span th:text="${page.totalElements}">0</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container-fluid px-lg-5 pb-5">
+        <div class="row g-4">
+
+            <!-- FORM -->
+            <div class="col-lg-4">
+                <form th:object="${item}" method="post">
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <input th:field="*{name}" class="form-control mb-2" placeholder="Tên sản phẩm"/>
+                    <input th:field="*{price}" type="number" class="form-control mb-2"/>
+
+                    <select th:field="*{categoryId}" class="form-select mb-2">
+                        <option value="">-- Chọn loại --</option>
+                        <option th:each="c : ${cates}"
+                                th:value="${c.id}"
+                                th:text="${c.name}"></option>
+                    </select>
+
+                    <input th:field="*{image}" id="imagePath" class="form-control mb-3"/>
+
+                    <button formaction="/admin/product/create"
+                            class="btn btn-success w-100 mb-2">THÊM</button>
+
+                    <button formaction="/admin/product/update"
+                            class="btn btn-primary w-100 mb-2"
+                            th:disabled="${item.id == null}">
+                        CẬP NHẬT
+                    </button>
+                </form>
+            </div>
+
+            <!-- TABLE -->
+            <div class="col-lg-8">
+                <table class="table table-hover">
+                    <thead class="bg-ocean text-gold">
+                    <tr>
+                        <th>Tên</th>
+                        <th>Danh mục</th>
+                        <th class="text-end">Giá</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${items}">
+                        <td th:text="${p.name}">Tên</td>
+                        <td th:text="${p.categoryName}">Danh mục</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + ' đ'">
+                        </td>
+                        <td>
+                            <a th:href="@{|/admin/product/edit/${p.id}|}">Sửa</a> |
+                            <a th:href="@{|/admin/product/delete/${p.id}|}"
+                               onclick="return confirm('Xóa?')">Xóa</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- PAGINATION -->
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                            th:classappend="${i == page.number} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{/admin/product/index(p=${i})}"
+                               th:text="${i + 1}">1</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

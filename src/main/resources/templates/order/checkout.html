@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<body>
+<main>
+    <section class="py-5 bg-ocean text-center text-white border-bottom border-gold animate__animated animate__fadeIn">
+        <div class="container py-3">
+            <h1 class="playfair display-5 text-gold mb-2 text-uppercase fw-bold">Hoàn Tất Đặt Hàng</h1>
+            <p class="small fw-light ls-2 text-uppercase" style="letter-spacing: 3px;">Hành trình sở hữu tuyệt tác đại dương sắp hoàn tất</p>
+        </div>
+    </section>
+
+    <div class="container py-5">
+        <div th:if="${cart == null or cart.count == 0}" class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-cart-x display-1 text-muted opacity-50"></i>
+            </div>
+            <h4 class="text-ocean playfair">Giỏ hàng của bạn hiện đang trống...</h4>
+            <a href="/" class="btn btn-gold px-5 py-2 mt-3 fw-bold">TIẾP TỤC MUA SẮM</a>
+        </div>
+
+        <form th:if="${cart != null and cart.count > 0}"
+              th:action="@{/order/confirm}" method="post" class="row g-5 animate__animated animate__fadeInUp">
+
+            <!-- ✅ Gửi lại ids đã chọn -->
+            <div th:if="${param.ids != null}" style="display:none;">
+                <input th:each="id : ${param.ids}" type="hidden" name="ids" th:value="${id}">
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 0;">
+                    <h5 class="playfair text-ocean border-bottom border-gold pb-3 mb-4 text-uppercase fw-bold">
+                        <i class="bi bi-geo-alt me-2"></i>Thông Tin Người Nhận
+                    </h5>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Họ và Tên</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 shadow-none"
+                                   th:value="${session.user.fullname}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Số điện thoại *</label>
+                            <input type="text" name="phone" class="form-control border-gold-focus py-2"
+                                   placeholder="09xx xxx xxx" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Email</label>
+                            <input type="email" class="form-control bg-light border-0 py-2"
+                                   th:value="${session.user.email}" readonly>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Địa chỉ nhận hàng *</label>
+                            <input type="text" name="address" class="form-control border-gold-focus py-2"
+                                   placeholder="Số nhà, tên đường, phường/xã..." required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Ghi chú đơn hàng</label>
+                            <textarea name="note" class="form-control border-gold-focus shadow-none" rows="3"
+                                      placeholder="Yêu cầu riêng v��� sản phẩm hoặc thời gian giao hàng..."></textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="playfair text-ocean border-bottom border-gold pb-3 mt-5 mb-4 text-uppercase fw-bold">Thanh Toán</h5>
+                    <div class="payment-methods">
+                        <div class="form-check p-3 border rounded-0 mb-2 transition-all">
+                            <input class="form-check-input ms-0 me-3 border-gold shadow-none" type="radio" name="payment" id="cod" checked>
+                            <label class="form-check-label d-flex justify-content-between align-items-center w-100 fw-bold" for="cod">
+                                <span>Thanh toán khi nhận hàng (COD)</span>
+                                <i class="bi bi-truck text-ocean fs-4"></i>
+                            </label>
+                        </div>
+                        <div class="form-check p-3 border rounded-0 opacity-50 bg-light">
+                            <input class="form-check-input ms-0 me-3 shadow-none" type="radio" name="payment" id="vnpay" disabled>
+                            <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="vnpay">
+                                <span>Thẻ ngân hàng / Ví điện tử (Sắp ra mắt)</span>
+                                <i class="bi bi-credit-card text-gold fs-4"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card border-0 bg-ocean text-white p-4 shadow-lg sticky-top" style="top: 100px; border-radius: 0;">
+                    <h5 class="playfair text-gold border-bottom border-secondary pb-3 mb-4 text-uppercase fw-bold text-center">Tóm Tắt Đơn Hàng</h5>
+
+                    <div class="order-items-scroll mb-4 pe-2" style="max-height: 320px; overflow-y: auto;">
+                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom border-secondary"
+                             th:each="item : ${cart.items}"
+                             th:if="${param.ids == null or #lists.contains(param.ids, item.id.toString())}"
+                             th:data-amount="${item.amount}"
+                             th:data-qty="${item.quantity}"
+                             class="selected-item">
+                            <div class="position-relative">
+                                <img th:src="${item.image}" class="rounded-0 border border-secondary shadow-sm"
+                                     width="60" height="60" style="object-fit: cover;">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gold text-dark border border-ocean"
+                                      th:text="${item.quantity}">1</span>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h6 class="small mb-0 text-gold fw-bold" th:text="${item.name}">Tên SP</h6>
+                                <p class="small mb-0 text-white-50"
+                                   th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                            </div>
+                            <div class="text-end fw-bold small">
+                                <span th:text="${#numbers.formatDecimal(item.amount, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 small">
+                        <span class="text-white-50">Tạm tính giá trị sản phẩm:</span>
+                        <span id="selected-subtotal">0 đ</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4 small">
+                        <span class="text-white-50">Phí vận chuyển bảo mật:</span>
+                        <span class="text-gold fw-bold text-uppercase">Miễn phí</span>
+                    </div>
+
+                    <hr class="bg-secondary mb-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h5 class="mb-0 text-gold playfair fw-bold">TỔNG CỘNG:</h5>
+                        <h4 class="mb-0 text-gold playfair fw-bold" id="selected-total">0 VNĐ</h4>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold btn-lg w-100 py-3 fw-bold text-uppercase shadow transition-all">
+                        Xác Nhận Sở Hữu Tuyệt Tác <i class="bi bi-check2-circle ms-2"></i>
+                    </button>
+
+                    <p class="small text-center text-white-50 mt-4 italic mb-0">
+                        <i class="bi bi-shield-lock-fill text-gold me-2"></i>Bảo mật dữ liệu chuẩn mã hóa Kaiser
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    function formatVND(value) {
+        return value.toLocaleString('vi-VN') + ' đ';
+    }
+
+    function updateTotals() {
+        const items = document.querySelectorAll('.selected-item');
+        let total = 0;
+
+        items.forEach(i => {
+            total += parseFloat(i.getAttribute('data-amount') || 0);
+        });
+
+        document.getElementById('selected-subtotal').textContent = formatVND(total);
+        document.getElementById('selected-total').textContent = formatVND(total).replace(' đ', ' VNĐ');
+    }
+
+    document.addEventListener('DOMContentLoaded', updateTotals);
+</script>
+</body>
+</html>

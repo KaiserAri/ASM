@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<body>
+<main>
+    <section class="py-5 bg-ocean text-center text-white border-bottom border-gold">
+        <div class="container">
+            <h1 class="playfair display-5 text-gold mb-2">NHẬT KÝ SỞ HỮU</h1>
+            <p class="small fw-light ls-2 text-uppercase">Hành trình của những tuyệt tác trang sức đến với bạn</p>
+        </div>
+    </section>
+
+    <div class="container py-5">
+        <div th:if="${orders.empty}" class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-journal-x display-1 text-white-50 p-4 rounded-circle bg-light"></i>
+            </div>
+            <h4 class="text-ocean playfair">Bạn chưa sở hữu tuyệt tác nào từ Kaiser Sea</h4>
+            <p class="text-muted">Hãy bắt đầu hành trình tìm kiếm vẻ đẹp vĩnh cửu ngay hôm nay.</p>
+            <a href="/" class="btn btn-gold px-5 py-2 mt-3">KHÁM PHÁ NGAY</a>
+        </div>
+
+        <div th:if="${!orders.empty}" class="card border-0 shadow-sm overflow-hidden animate__animated animate__fadeInUp">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-ocean">
+                    <tr class="text-uppercase small fw-bold" style="letter-spacing: 1px;">
+                        <th class="ps-4 py-3">Mã đơn hàng</th>
+                        <th class="py-3">Ngày đặt</th>
+                        <th class="py-3">Địa chỉ nhận hàng</th>
+                        <th class="py-3 text-center">Trạng thái</th>
+                        <th class="py-3 text-end">Tổng giá trị</th>
+                        <th class="pe-4 py-3 text-center">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="o : ${orders}">
+                        <td class="ps-4">
+                            <span class="fw-bold text-ocean" th:text="'#KS-' + ${o.id}">#KS-101</span>
+                        </td>
+                        <td>
+                            <span class="text-muted small" th:text="${#dates.format(o.createDate, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
+                        </td>
+                        <td>
+                                <span class="text-truncate d-inline-block" style="max-width: 200px;"
+                                      th:text="${o.address}">Địa chỉ nhận hàng...</span>
+                        </td>
+                        <td class="text-center">
+                                <span th:if="${o.status == 0}" class="badge rounded-pill bg-gold-light text-gold-dark px-3 py-2 border border-gold">
+                                    <i class="bi bi-clock-history me-1"></i> Chờ xác nhận
+                                </span>
+                            <span th:if="${o.status == 1}" class="badge rounded-pill bg-info-light text-info px-3 py-2 border border-info">
+                                    <i class="bi bi-truck me-1"></i> Đang giao hàng
+                                </span>
+                            <span th:if="${o.status == 2}" class="badge rounded-pill bg-success-light text-success px-3 py-2 border border-success">
+                                    <i class="bi bi-check2-circle me-1"></i> Đã hoàn tất
+                                </span>
+                            <span th:if="${o.status == 3}" class="badge rounded-pill bg-light text-muted px-3 py-2 border">
+                                    <i class="bi bi-x-circle me-1"></i> Đã hủy
+                                </span>
+                        </td>
+                        <td class="text-end fw-bold text-ocean">
+                            <span th:text="${#numbers.formatDecimal(o.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</span>
+                        </td>
+                        <td class="pe-4 text-center">
+                            <a th:href="@{|/order/detail/${o.id}|}" class="btn btn-outline-ocean btn-sm px-3">
+                                CHI TIẾT <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    /* Màu sắc đặc trưng Kaiser Sea */
+    .bg-ocean { background-color: #002147 !important; }
+    .text-ocean { color: #002147; }
+    .text-gold { color: #D4AF37 !important; }
+    .border-gold { border-color: #D4AF37 !important; }
+
+    /* Màu sắc Badge trạng thái */
+    .bg-gold-light { background-color: rgba(212, 175, 55, 0.1); }
+    .text-gold-dark { color: #a6892c; }
+    .bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+    .bg-info-light { background-color: rgba(13, 202, 240, 0.1); }
+
+    /* Hiệu ứng bảng */
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 33, 71, 0.02);
+        transition: 0.3s;
+    }
+
+    /* Nút Chi tiết */
+    .btn-outline-ocean {
+        border-color: #002147;
+        color: #002147;
+        border-radius: 0;
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+    .btn-outline-ocean:hover {
+        background-color: #002147;
+        color: #D4AF37;
+    }
+
+    .btn-gold {
+        background-color: #D4AF37;
+        color: #002147;
+        border: none;
+        border-radius: 0;
+        font-weight: 600;
+    }
+</style>
+</body>
+</html>

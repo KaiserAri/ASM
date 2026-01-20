@@ -1,0 +1,120 @@
+<main xmlns:th="http://www.thymeleaf.org" th:fragment="main">
+
+    <!-- HEADER -->
+    <section class="py-4 bg-ocean text-white border-bottom border-gold mb-5">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="playfair text-gold mb-0">TRUNG TÂM PHÂN TÍCH</h2>
+                <p class="small text-white-50 mb-0">Báo cáo chiến lược kinh doanh Kaiser Sea</p>
+            </div>
+            <button onclick="window.print()" class="btn btn-gold btn-sm fw-bold">
+                <i class="bi bi-printer me-2"></i>XUẤT BÁO CÁO
+            </button>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+
+        <div class="row g-4">
+
+            <!-- KHO HÀNG -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header border-bottom border-gold">
+                        <h5 class="playfair text-ocean mb-0">
+                            <i class="bi bi-box-seam me-2"></i>GIÁ TRỊ KHO HÀNG
+                        </h5>
+                    </div>
+
+                    <table class="table mb-0">
+                        <thead class="bg-light text-muted small">
+                        <tr>
+                            <th class="ps-4">Danh mục</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="pe-4 text-end">Giá trị</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="r : ${inventoryItems}">
+                            <td class="ps-4 fw-bold text-ocean"
+                                th:text="${r.group}">---</td>
+
+                            <td class="text-center">
+                                    <span class="badge bg-ocean-light text-ocean"
+                                          th:text="${r.count}">0</span>
+                            </td>
+
+                            <td class="pe-4 text-end fw-bold text-gold">
+                                    <span th:text="${#numbers.formatDecimal(r.sum,0,'COMMA',0,'POINT')} + ' đ'">
+                                        0 đ
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- DOANH THU -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-ocean text-gold">
+                        <h5 class="playfair mb-0">
+                            <i class="bi bi-graph-up-arrow me-2"></i>HIỆU QUẢ DOANH THU
+                        </h5>
+                    </div>
+
+                    <table class="table mb-0">
+                        <thead class="bg-light text-muted small">
+                        <tr>
+                            <th class="ps-4">Danh mục</th>
+                            <th class="text-center">Đã bán</th>
+                            <th class="pe-4 text-end">Doanh thu</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="r : ${revenueItems}">
+                            <td class="ps-4 fw-bold text-ocean"
+                                th:text="${r.group}">---</td>
+
+                            <td class="text-center">
+                                    <span class="badge bg-gold text-dark"
+                                          th:text="${r.count}">0</span>
+                            </td>
+
+                            <td class="pe-4 text-end fw-bold text-ocean">
+                                    <span th:text="${#numbers.formatDecimal(r.sum,0,'COMMA',0,'POINT')} + ' đ'">
+                                        0 đ
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TỔNG -->
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="p-4 bg-white shadow-sm border-start border-gold border-4">
+                    <h6 class="text-muted fw-bold">TỔNG SẢN PHẨM TRONG KHO</h6>
+                    <h2 class="playfair text-ocean"
+                        th:text="${totalInventory}">0</h2>
+                </div>
+            </div>
+
+            <div class="col-md-8 text-end">
+                <div class="p-4 bg-white shadow-sm border-start border-ocean border-4">
+                    <h6 class="text-muted fw-bold">TỔNG DOANH THU HỆ THỐNG</h6>
+                    <h2 class="playfair text-gold"
+                        th:text="${#numbers.formatDecimal(totalRevenue,0,'COMMA',0,'POINT')} + ' VNĐ'">
+                        0 VNĐ
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

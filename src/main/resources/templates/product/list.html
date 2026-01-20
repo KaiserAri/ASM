@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kaiser Sea - Tuyệt Tác Trang Sức</title>
+</head>
+<body>
+<main>
+    <section class="py-5 text-center text-white"
+             style="background: linear-gradient(rgba(0,33,102,0.8), rgba(0,33,102,0.8)),
+                    url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop');
+                    background-size: cover; background-position: center; border-bottom: 2px solid #D4AF37;">
+        <div class="container py-4">
+            <h1 class="playfair display-3 text-gold mb-3 animate__animated animate__fadeInDown">KAISER SEA</h1>
+            <p class="lead fw-light ls-2 text-uppercase" style="letter-spacing: 5px;">Vẻ đẹp vĩnh cửu từ đại dương sâu thẳm</p>
+        </div>
+    </section>
+
+    <div class="container mt-n4">
+        <div class="card shadow-lg border-0 bg-white p-3" style="margin-top: -40px; border-radius: 0;">
+            <form th:action="@{/}" method="get" class="row g-3 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-search text-gold"></i></span>
+                        <input type="text" name="keywords" class="form-control border-start-0"
+                               placeholder="Tìm kiếm tuyệt tác trang sức..." th:value="${keywords}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select name="cid" class="form-select" onchange="this.form.submit()">
+                        <option value="">Tất cả bộ sưu tập</option>
+                        <option th:each="c : ${cates}" th:value="${c.id}"
+                                th:text="${c.name}" th:selected="${c.id == cid}">Danh mục</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-gold w-100 fw-bold">TÌM KIẾM</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div th:if="${page.isEmpty()}" class="text-center py-5">
+            <i class="bi bi-patch-question display-1 text-muted"></i>
+            <h3 class="mt-3 playfair text-ocean">Rất tiếc, Kaiser Sea chưa tìm thấy tuyệt tác này...</h3>
+            <a href="/" class="btn btn-link text-gold">Quay lại danh sách chính</a>
+        </div>
+
+        <div class="row g-4" th:if="${!page.isEmpty()}">
+            <div class="col-6 col-md-4 col-lg-3" th:each="p : ${page.content}">
+                <div class="card product-card h-100 shadow-sm border-0">
+                    <div class="product-img-wrapper position-relative overflow-hidden">
+                        <img th:src="${p.image}" class="card-img-top img-fluid"
+                             th:alt="${p.name}" style="transition: transform 0.6s ease;">
+
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-ocean-gradient text-gold small px-3">Exclusive</span>
+                        </div>
+
+                        <div class="product-overlay d-flex align-items-center justify-content-center">
+                            <a th:href="@{|/product/detail/${p.id}|}" class="btn btn-light rounded-circle mx-1 shadow">
+                                <i class="bi bi-eye text-ocean"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-body text-center d-flex flex-column p-4">
+                        <p class="text-muted small text-uppercase mb-1" th:text="${p.categoryName}" style="letter-spacing: 2px;">Danh mục</p>
+                        <h6 class="fw-bold mb-3 text-ocean" th:text="${p.name}">Tên sản phẩm</h6>
+
+                        <h5 class="text-gold playfair fw-bold mt-auto border-top pt-3"
+                            th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                            0 VNĐ
+                        </h5>
+
+                        <div class="mt-3 d-grid">
+                            <a th:href="@{|/cart/add/${p.id}|}" class="btn btn-ocean-gold fw-bold">
+                                <i class="bi bi-bag-plus me-2"></i>THÊM VÀO GIỎ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 d-flex justify-content-center" th:if="${page.totalPages > 1}">
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-luxury">
+                    <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/(p=0, cid=${cid}, keywords=${keywords})}">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/(p=${page.number - 1}, cid=${cid}, keywords=${keywords})}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    <li class="page-item active">
+                        <span class="page-link" th:text="${page.number + 1} + ' / ' + ${page.totalPages}">1 / 1</span>
+                    </li>
+
+                    <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/(p=${page.number + 1}, cid=${cid}, keywords=${keywords})}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/(p=${page.totalPages - 1}, cid=${cid}, keywords=${keywords})}">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+
+<style>
+    .bg-ocean-gradient { background: linear-gradient(45deg, #002147, #003366); }
+    .text-ocean { color: #002147; }
+    .ls-2 { letter-spacing: 2px; }
+    .product-card { border-radius: 0; }
+    .product-card:hover .card-img-top { transform: scale(1.1); }
+    .product-overlay {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 33, 71, 0.4); opacity: 0; transition: 0.4s;
+    }
+    .product-card:hover .product-overlay { opacity: 1; }
+    .btn-ocean-gold {
+        background-color: #002147; color: #D4AF37; border: 1px solid #D4AF37;
+        border-radius: 0; padding: 10px; transition: 0.3s;
+    }
+    .btn-ocean-gold:hover { background-color: #D4AF37; color: #002147; }
+
+    /* Style Phân trang Luxury (Mới) */
+    .pagination-luxury .page-link {
+        border-radius: 0; color: #002147; border: 1px solid #D4AF37; margin: 0 2px;
+        transition: 0.3s;
+    }
+    .pagination-luxury .page-item.active .page-link {
+        background-color: #D4AF37; border-color: #D4AF37; color: #002147;
+    }
+    .pagination-luxury .page-item.disabled .page-link { color: #ccc; border-color: #eee; }
+    .pagination-luxury .page-link:hover:not(.active) { background-color: #f8f1d7; }
+</style>
+</body>
+</html>
